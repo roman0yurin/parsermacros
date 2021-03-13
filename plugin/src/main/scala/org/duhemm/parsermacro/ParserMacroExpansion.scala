@@ -38,7 +38,8 @@ class ExpandParserMacro(val c: Context) extends UniverseUtils
     // Warning, normally we put
     // val mirror = scala.meta.Mirror(global)
     // here
-    val mirror = new scala.meta.internal.scalahost.v1.offline.Mirror(cp, sp)
+    import scala.meta.internal.scalahost.v1.offline.Mirror;
+    val mirror = new Mirror(cp, sp, Mirror.autodetectScalahostNscPluginPath)
     val arguments: List[Tokens] = rawArguments.map { string2input }.map { in =>
       mirror.dialect(in).tokenize.get
     }
