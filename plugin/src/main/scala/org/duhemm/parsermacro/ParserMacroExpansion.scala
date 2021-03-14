@@ -32,13 +32,15 @@ class ExpandParserMacro(val c: Context) extends UniverseUtils
     // get classpath and sourcepath from env vars
     val sys = new scala.sys.SystemProperties()
     val cp: String =
-      sys.getOrElse("CLASSPATH", sys.getOrElse("sbt.class.directory", ""))
+      sys.getOrElse("CLASSPATH", sys.getOrElse("sbt.class.directory", c.compilerSettings.last))
     val sp: String = "src/"
+
 
     // Warning, normally we put
     // val mirror = scala.meta.Mirror(global)
     // here
     import scala.meta.internal.scalahost.v1.offline.Mirror;
+
     val mirror = new Mirror(cp, sp, Mirror.autodetectScalahostNscPluginPath)
     val arguments: List[Tokens] = rawArguments.map { string2input }.map { in =>
       mirror.dialect(in).tokenize.get
